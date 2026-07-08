@@ -3,6 +3,7 @@ import HeaderUI from './components/HeaderUI';
 
 import { Grid } from '@mui/material';
 import AlertUI from './components/AlertUI';
+import SelectorUI from './components/SelectorUI';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
          </Grid>
          {/* Selector */}
          <Grid size={{ xs: 12, md: 9 }}>Elemento: Selector</Grid>
+                      <SelectorUI/>
 
          {/* Indicadores */}
          <Grid size={{ xs: 12, md: 12 }}>Elemento: Indicadores</Grid>
