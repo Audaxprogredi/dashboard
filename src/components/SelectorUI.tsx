@@ -4,11 +4,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import { useState } from 'react';
 
-export default function SelectorUI() {
-    const [cityInput, setCityInput] = useState('');
+interface SelectorProps {
+  onOptionSelect: (option: string) => void;
+}
+
+export default function SelectorUI({ onOptionSelect }: SelectorProps) {
+    const [cityInput, setCityInput] = useState('Guayaquil');
 
     const handleChange = (event: SelectChangeEvent<string>) => {
-        setCityInput(event.target.value);
+        const selectedValue = event.target.value;
+        setCityInput(selectedValue);
+        // Notificamos el cambio al componente padre (App.tsx)
+        onOptionSelect(selectedValue);
     };
 
     return (
@@ -18,21 +25,19 @@ export default function SelectorUI() {
           <Select
              labelId="city-select-label"
              id="city-simple-select" 
-             value={cityInput} //  CORREGIDO: Ahora usa la variable del estado, no el texto plano
+             value={cityInput}
              label="Ciudad"
              onChange={handleChange}
           >
-             {/*  CORREGIDO: Añadido value="" para que coincida con el estado inicial */}
-             <MenuItem value="" disabled><em>Seleccione una ciudad</em></MenuItem> 
-             <MenuItem value={"Guayaquil"}>Guayaquil</MenuItem>
-             <MenuItem value={"Quito"}>Quito</MenuItem>
-             <MenuItem value={"Manta"}>Manta</MenuItem>
-             <MenuItem value={"Cuenca"}>Cuenca</MenuItem>
+             <MenuItem value="Guayaquil">Guayaquil</MenuItem>
+             <MenuItem value="Quito">Quito</MenuItem>
+             <MenuItem value="Manta">Manta</MenuItem>
+             <MenuItem value="Cuenca">Cuenca</MenuItem>
           </Select>
 
           {cityInput && (
-              <p>
-                   Clima en la ciudad de <span style={{textTransform: 'capitalize', fontWeight: 'bold'}}>{cityInput}</span>
+              <p style={{ marginTop: '8px' }}>
+                 Clima en la ciudad de: <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{cityInput}</span>
               </p>
           )}
        </FormControl>

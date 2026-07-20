@@ -1,51 +1,50 @@
+import { useState } from 'react';
 import './App.css';
 import HeaderUI from './components/HeaderUI';
 import IndicatorUI from './components/IndicatorUI';
 import useFetchData from './hooks/useFetchData';
-
+import TableUI from './components/TableUI';
+import ChartUI from './components/ChartUI';
 import { Grid } from '@mui/material';
 import AlertUI from './components/AlertUI';
 import SelectorUI from './components/SelectorUI';
 
 function App() {
-   // Obtenemos los datos del hook personalizado
-   const dataFetcherOutput = useFetchData();
+   // Estado para almacenar la opción/ciudad seleccionada por el usuario
+   const [selectedOption, setSelectedOption] = useState<string | null>('Guayaquil');
 
-   // Si dataFetcherOutput tiene una propiedad 'loading', úsala. 
-   // Si no la tiene, asumimos que está cargando mientras 'current' no exista.
-   const isLoading = dataFetcherOutput?.loading ?? !dataFetcherOutput?.current;
+   // Comunicamos la opción seleccionada al custom hook
+   const dataFetcherOutput = useFetchData(selectedOption);
+
+   // Determinamos el estado de carga
+   const isLoading = (dataFetcherOutput && 'loading' in dataFetcherOutput) 
+     ? (dataFetcherOutput as { loading?: boolean }).loading ?? false 
+     : !dataFetcherOutput?.current;
 
    return (
-      <Grid container spacing={5} sx={{ justifyContent: "left", alignItems: "center" }}>
+      <Grid container spacing={4} sx={{ p: 2, justifyContent: "left", alignItems: "center" }}>
 
          {/* Encabezado */}
          <Grid size={{ xs: 12, md: 12 }}>
-            Elemento: Encabezado
             <HeaderUI />
          </Grid>
 
          {/* Alertas */}
          <Grid size={{ xs: 12, md: 3 }}>
-            Elemento: Alertas
-         </Grid>  
-         <Grid container sx={{ justifyContent: "right", alignItems: "center" }}>
-             <AlertUI description="No se prevén lluvias" />
+            <AlertUI description="No se prevén lluvias" />
          </Grid>
 
-         {/* Selector */}
+         {/* Selector de ciudad */}
          <Grid size={{ xs: 12, md: 9 }}>
-            Elemento: Selector
+            <SelectorUI onOptionSelect={setSelectedOption} />
          </Grid>
-         <SelectorUI />
 
-         {/* Indicadores */}
+         {/* Indicadores Principales */}
          <Grid size={{ xs: 12, md: 12 }}>
-            Elemento: Indicadores
-            
             <Grid container spacing={2}>
-                
+               
                {/* 1. Temperatura (2m) */}
-               <Grid size={{ xs: 12, md: 3 }}>
+               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <IndicatorUI
                      title='Temperatura (2m)'
                      loading={isLoading}
@@ -100,18 +99,26 @@ function App() {
          </Grid>
 
          {/* Gráfico */}
-         <Grid sx={{ display: { xs: "none", md: "block" } }}>
-            Elemento: Gráfico
+         <Grid size={{ xs: 12, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
+            <ChartUI 
+               hourly={dataFetcherOutput?.hourly} 
+               hourlyUnits={dataFetcherOutput?.hourly_units}
+               loading={isLoading}
+            />
          </Grid>
 
          {/* Tabla */}
-         <Grid sx={{ display: { xs: "none", md: "block" } }}>
-            Elemento: Tabla
+         <Grid size={{ xs: 12, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
+            <TableUI 
+               hourly={dataFetcherOutput?.hourly} 
+               hourlyUnits={dataFetcherOutput?.hourly_units}
+               loading={isLoading}
+            />
          </Grid>
 
          {/* Información adicional */}
          <Grid size={{ xs: 12, md: 12 }}>
-            Elemento: Información adicional
+            {/* Sección reservada para detalles adicionales */}
          </Grid>
       </Grid>
    );

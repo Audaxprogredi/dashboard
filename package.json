@@ -1,7 +1,6 @@
 {
   "name": "dashboard",
   "homepage": "https://audaxprogredi.github.io/dashboard",
-
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,6 +16,11 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.2.0",
+    "@mui/system": "^9.2.0",
+    "@mui/x-charts": "^9.10.0",
+    "@mui/x-data-grid": "^9.10.0",
+    "install": "^0.13.0",
+    "npm": "^11.18.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
