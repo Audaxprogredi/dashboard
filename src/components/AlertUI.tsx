@@ -2,10 +2,11 @@ import Alert from '@mui/material/Alert';
 
 interface AlertConfig {
     description: string;
+    severity?: 'success' | 'info' | 'warning' | 'error';
 }
 
-export default function AlertUI( config:AlertConfig ) {
+export default function AlertUI({ description, severity = 'success' }: AlertConfig) {
     return (
-        <Alert variant="standard" severity="success"> {config.description} </Alert>
-    )
+        <Alert variant="standard" severity={severity}>{description}</Alert>
+    );
 }
